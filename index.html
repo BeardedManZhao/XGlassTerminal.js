@@ -1,0 +1,26 @@
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <title>测试代码</title>
+  <link rel="stylesheet" href="css/XGlassTerminal.css">
+</head>
+
+<body>
+<div>
+
+</div>
+</body>
+
+<script src="js/XGlassTerminal.js" type="text/javascript"></script>
+<script>
+  // 实例化终端
+  const terminal = new XGlassTerminal(document.querySelector("div"), "#");
+  // 初始化终端 这里可以给处理函数
+  terminal.initEvent(function (text) {
+    alert("输入了: " + text);
+  });
+  // 添加文本 也可以使用 input
+  XGlassTerminal.appendXGlassText(terminal, "Hello World!", (e) => alert("输入了 " + e));
+</script>
+</html>
