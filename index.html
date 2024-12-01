@@ -1,9 +1,9 @@
 <html lang="zh">
 
 <head>
-  <meta charset="utf-8">
-  <title>测试代码</title>
-  <link rel="stylesheet" href="css/XGlassTerminal.css">
+    <meta charset="utf-8">
+    <title>测试代码</title>
+    <link href="css/XGlassTerminal.css" rel="stylesheet">
 </head>
 
 <body>
@@ -11,16 +11,20 @@
 
 </div>
 </body>
-
-<script src="js/XGlassTerminal.js" type="text/javascript"></script>
+<script src="js/XGlassTerminal.min.js" type="text/javascript"></script>
 <script>
-  // 实例化终端
-  const terminal = new XGlassTerminal(document.querySelector("div"), "#");
-  // 初始化终端 这里可以给处理函数
-  terminal.initEvent(function (text) {
-    alert("输入了: " + text);
-  });
-  // 添加文本 也可以使用 input
-  XGlassTerminal.appendXGlassText(terminal, "Hello World!", (e) => alert("输入了 " + e));
+    // 实例化终端 并设置前缀为 #
+    const terminal = new XGlassTerminal(document.querySelector("div"), "#");
+    // 自定义前缀
+    terminal.commandPrefix = "root@xxx# ";
+    // 初始化终端 并对输入进行监听 TODO 参数统一是 当前的终端对象(为了防止在嵌套函数中无法访问设计的) 以及输入的命令
+    terminal.initEvent(
+        // 第一个函数是监听回车后的命令
+        (x, r) => Command.GetLinuxCommandHandler(x, r),
+        // 第二个函数是监听Tab键后的命令
+        (x, r) => Command.GetLinuxCommandHandlerTab(x, r),
+        // 第三个是上方向按键
+        Command.GetLinuxCommandHandlerArrowUp
+    );
 </script>
 </html>

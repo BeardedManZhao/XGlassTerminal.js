@@ -1,34 +1,34 @@
 /* 终端元素主题 */
 .XGlassTerminal {
-  background-color: rgba(58, 56, 56, 0.6);
-  color: #00FE44;
-  line-height: 22px;
-  box-shadow: 0 0 10px 2px #0ae524;
-  border-radius: 20px;
-  padding: 20px;
+    background-color: rgba(58, 56, 56, 0.6);
+    color: #00FE44;
+    line-height: 22px;
+    box-shadow: 0 0 10px 2px #0ae524;
+    border-radius: 20px;
+    padding: 20px;
 }
 
 /* pre 的终端页面需要滑轮 */
 .XGlassTerminal pre {
-  white-space: pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
-  overflow: hidden;      /* 隐藏溢出的内容 */
-  resize: none;          /* 禁止调整大小 */
+    white-space: pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
+    overflow: hidden; /* 隐藏溢出的内容 */
+    resize: none; /* 禁止调整大小 */
 }
 
 /* 终端命令输入元素 */
 .XGlassTerminal .XGlassTerminal_input {
-  padding: 0;
-  white-space: pre; /* 保留空白符序列，但是正常地进行换行 */
-  overflow: hidden;      /* 隐藏溢出的内容 */
-  resize: none;          /* 禁止调整大小 */
-  min-height: 20px;      /* 设置最小高度 */
-  color: #36ff00;
-  width: 90%;
-  background: rgba(0, 0, 0, 0);
-  text-decoration: none;
-  box-shadow: none;
-  border: none;
-  position: relative;
-  outline: none;
-  font-weight: bolder;
+    padding: 0;
+    white-space: pre; /* 保留空白符序列，但是正常地进行换行 */
+    overflow: hidden; /* 隐藏溢出的内容 */
+    resize: none; /* 禁止调整大小 */
+    min-height: 20px; /* 设置最小高度 */
+    color: #36ff00;
+    width: 90%;
+    background: rgba(0, 0, 0, 0);
+    text-decoration: none;
+    box-shadow: none;
+    border: none;
+    position: relative;
+    outline: none;
+    font-weight: bolder;
 }
