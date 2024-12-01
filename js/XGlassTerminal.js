@@ -109,6 +109,10 @@ class XGlassTerminal {
         }
     }
 
+    clear() {
+        this._XGlassTerminalPre.innerHTML = "";
+    }
+
     setCommandPrefix(commandPrefix) {
         this._commandPrefix = commandPrefix;
         this._commandPrefix += " ";
@@ -170,7 +174,7 @@ class XGlassTerminal {
 }
 
 function getXGlassTerminalAsciiLogo() {
-  return "\n __   _______ _            _______                  _             _   _     \n \\ \\ / / ____| |          |__   __|                (_)           | | (_)    \n  \\ V / |  __| | __ _ ___ ___| | ___ _ __ _ __ ___  _ _ __   __ _| |  _ ___ \n   > <| | |_ | |/ _` / __/ __| |/ _ \\ '__| '_ ` _ \\| | '_ \\ / _` | | | / __|\n  / . \\ |__| | | (_| \\__ \\__ \\ |  __/ |  | | | | | | | | | | (_| | |_| \\__ \\\n /_/ \\_\\_____|_|\\__,_|___/___/_|\\___|_|  |_| |_| |_|_|_| |_|\\__,_|_(_) |___/\n                                                                    _/ |    \n                                                                   |__/     \n"
+    return "\n __   _______ _            _______                  _             _   _     \n \\ \\ / / ____| |          |__   __|                (_)           | | (_)    \n  \\ V / |  __| | __ _ ___ ___| | ___ _ __ _ __ ___  _ _ __   __ _| |  _ ___ \n   > <| | |_ | |/ _` / __/ __| |/ _ \\ '__| '_ ` _ \\| | '_ \\ / _` | | | / __|\n  / . \\ |__| | | (_| \\__ \\__ \\ |  __/ |  | | | | | | | | | | (_| | |_| \\__ \\\n /_/ \\_\\_____|_|\\__,_|___/___/_|\\___|_|  |_| |_| |_|_|_| |_|\\__,_|_(_) |___/\n                                                                    _/ |    \n                                                                   |__/     \n"
 }
 
 /**
@@ -181,52 +185,111 @@ class LinuxCommandHandler {
         '/': {
             bin: {
                 ls: {
-                    fun: this.ls
+                    fun: this.ls,
+                    text: "ls 用于获取到一个文件目录下面的所有子文件以及目录"
                 },
                 pwd: {
-                    fun: this.pwd
+                    fun: this.pwd,
+                    text: "pwd 用于获取当前工作目录"
                 },
                 cd: {
                     fun: this.cd
+                    , text: "cd 用于改变当前工作目录"
                 },
                 mkdir: {
-                    fun: this.mkdir
+                    fun: this.mkdir,
+                    text: "mkdir 用于创建一个目录"
                 },
                 rm: {
-                    fun: this.rm
+                    fun: this.rm,
+                    text: "rm 用于删除一个文件或者一个目录"
                 },
                 touch: {
-                    fun: this.touch
+                    fun: this.touch,
+                    text: "touch 用于创建一个文件"
                 },
                 cat: {
-                    fun: this.cat
+                    fun: this.cat,
+                    text: "cat 用于获取一个文件的内容"
                 },
                 mv: {
-                    fun: this.mv
+                    fun: this.mv,
+                    text: "mv 用于移动一个文件或者一个目录"
                 },
                 cp: {
-                    fun: this.cp
+                    fun: this.cp,
+                    text: "cp 用于复制一个文件或者一个目录"
                 },
                 echo: {
-                    fun: this.echo
+                    fun: this.echo,
+                    text: "echo 用于输出一个字符串"
                 },
                 time: {
-                    fun: this.time
+                    fun: this.time,
+                    text: "time 用于获取当前时间"
                 },
                 curl: {
-                    fun: this.curl
+                    fun: this.curl,
+                    text: "curl 用于获取一个URL的内容"
                 },
                 help: {
-                    fun: this.help
+                    fun: this.help,
+                    text: "help 用于获取命令的帮助"
                 },
                 welcome: {
-                    fun: this.welcome
+                    fun: this.welcome,
+                    text: "welcome 用于获取欢迎信息"
                 },
                 writer: {
-                    fun: this.writer
+                    fun: this.writer,
+                    text: "writer 用于将一些字符串写入文件"
                 },
                 grep: {
-                    fun: this.grep
+                    fun: this.grep,
+                    text: "grep 用于过滤一些文件名字 grep 正则 需要被匹配的目录，会自动的读取目录下面的所有子文件和子目录的名字"
+                },
+                ifconfig: {
+                    fun: this.ifconfig,
+                    text: "ifconfig 用于获取网络接口的信息"
+                },
+                date: {
+                    fun: this.date,
+                    text: "date 用于获取当前日期"
+                },
+                clear: {
+                    fun: this.clear,
+                    text: "clear 用于清空屏幕"
+                },
+                whoAmI: {
+                    fun: this.whoAmI,
+                    text: "whoAmI 用于获取当前用户名"
+                },
+                hostname: {
+                    fun: this.hostname,
+                    text: "hostname 获取当前的主机名称"
+                },
+                "export": {
+                    fun: this.export,
+                    text: "export 用于设置环境变量"
+                },
+                env: {
+                    fun: this.env,
+                    text: "env 用于获取环境变量"
+                },
+                printenv: {
+                    fun: this.printenv,
+                    text: "printenv 用于获取环境变量"
+                },
+                unset: {
+                    fun: this.unset,
+                    text: "unset 用于删除环境变量"
+                },
+                openWeb: {
+                    fun: (x, r) => {
+                        window.open(r);
+                        XGlassTerminal.appendXGlassText(x, "已尝试打开 URL " + r);
+                    },
+                    text: "openWeb 用于打开一个URL"
                 }
             },
             usr: {
@@ -243,7 +306,13 @@ class LinuxCommandHandler {
                 passwd: {},
                 group: {},
                 hosts: {},
-                resolv_conf: {}
+                resolv_conf: {},
+                hostname: {
+                    text: `XGlassTerminal@${navigator.userAgent}`
+                },
+                profile: {
+                    text: {}
+                }
             },
             var: {
                 log: {
@@ -269,17 +338,36 @@ class LinuxCommandHandler {
      * @return {Object|null} 找到的文件或目录对象，未找到则返回 null
      */
     findFileOrDir(path) {
-        const b = path.charAt(0) === '.';
-        if (b || path.charAt(0) !== '/') {
-            path = (this.nowPath + (b ? path.substring(1, path.length) : path)).replaceAll('//', '/');
-        }
-        if (path === '/') {
+        if (path === '.' || path === '/'){
             return this.linuxDirectory['/'];
         }
-        if (path.charAt(0) === '/') {
-            path = path.substring(1, path.length);
+        // 处理相对路径中的 ..
+        while (path.includes('../')) {
+            const parts = path.split('/');
+            const index = parts.indexOf('..');
+            if (index > 0) {
+                parts.splice(index - 1, 2); // 移除 .. 和它前面的一个目录
+            } else {
+                parts.splice(index, 1); // 如果 .. 在最前面，只移除 ..
+            }
+            path = parts.join('/');
         }
+
+        // 处理相对路径
+        const isRelative = path.charAt(0) === '.' || path.charAt(0) === '~' || path.charAt(0) === './';
+        if (isRelative || path.charAt(0) !== '/') {
+            path = (this.nowPath + '/' + (isRelative ? path.substring(1) : path)).replaceAll('//', '/');
+        }
+
+        // 规范化路径
+        path = path.split('/').filter(part => part !== '').join('/');
+
+        if (path === '') {
+            path = '/';
+        }
+
         console.info("find:", path);
+
         let parts = path.split('/');
         let current = this.linuxDirectory['/'];
 
@@ -311,10 +399,94 @@ class LinuxCommandHandler {
         }
     }
 
-    help = (xGlassTerminal) => {
-        XGlassTerminal.appendXGlassText(xGlassTerminal, 'Available commands list');
-        XGlassTerminal.appendXGlassText(xGlassTerminal, '+==============================+');
-        this.processCommand(xGlassTerminal, ['ls', '/bin']);
+    ifconfig = (xGlassTerminal, args) => {
+        if (args.length > 2) {
+            this.curl(xGlassTerminal, ['ifconfig', 'http://ifconfig.me/' + args[1]]);
+        } else {
+            this.curl(xGlassTerminal, ['ifconfig', 'http://ifconfig.me/ip']);
+        }
+    };
+
+    whoAmI = (xGlassTerminal) => {
+        XGlassTerminal.appendXGlassText(xGlassTerminal, 'root');
+    };
+
+    hostname = (xGlassTerminal) => {
+        this.cat(xGlassTerminal, ['cat', '/etc/hostname']);
+    };
+
+    date = (xGlassTerminal) => {
+        const date = new Date();
+        XGlassTerminal.appendXGlassText(xGlassTerminal, date.toLocaleString());
+    };
+
+    clear = (xGlassTerminal) => {
+        xGlassTerminal.clear();
+    };
+
+    export = (xGlassTerminal, args) => {
+        if (args.length < 2) {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, 'Usage: export <variable>=<value>');
+            return;
+        }
+        const split = args[1].split('=');
+        // 找到 /etc/profile 文件
+        const findFileOrDir1 = this.findFileOrDir("/etc/profile");
+        if (findFileOrDir1) {
+            findFileOrDir1.text[split[0].trim()] = split[1].trim();
+        } else {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, 'Error: Cannot find /etc/profile');
+        }
+    };
+
+    env = (xGlassTerminal) => {
+        // 获取 /etc/profile 文件
+        const findFileOrDir1 = this.findFileOrDir("/etc/profile");
+        if (findFileOrDir1) {
+            for (let key in findFileOrDir1.text) {
+                XGlassTerminal.appendXGlassText(xGlassTerminal, `${key}=${findFileOrDir1.text[key]}`);
+            }
+        } else {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, 'Error: Cannot find /etc/profile');
+        }
+    };
+
+    printenv = (xGlassTerminal, args) => {
+        if (args.length < 1) {
+            env(xGlassTerminal);
+            return;
+        }
+        // 获取 /etc/profile 文件
+        const findFileOrDir1 = this.findFileOrDir("/etc/profile");
+        if (findFileOrDir1) {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, findFileOrDir1.text[args[1]]);
+        } else {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, 'Error: Cannot find /etc/profile');
+        }
+    };
+
+    unset = (xGlassTerminal, args) => {
+        if (args.length < 1) {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, 'Usage: unset <variable>');
+        } else {
+            // 获取 /etc/profile 文件
+            const findFileOrDir1 = this.findFileOrDir("/etc/profile");
+            if (findFileOrDir1) {
+                delete findFileOrDir1.text[args[1]];
+            } else {
+                XGlassTerminal.appendXGlassText(xGlassTerminal, 'Error: Cannot find /etc/profile');
+            }
+        }
+    };
+
+    help = (xGlassTerminal, args) => {
+        if (args.length > 1){
+            this.cat(xGlassTerminal, ['cat', '/bin/' + args[1]]);
+        } else {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, 'Available commands list');
+            XGlassTerminal.appendXGlassText(xGlassTerminal, '+==============================+');
+            this.processCommand(xGlassTerminal, ['ls', '/bin']);
+        }
     };
 
     welcome = (xGlassTerminal) => {
@@ -401,9 +573,10 @@ class LinuxCommandHandler {
      * linux grep 命令处理
      * @param xGlassTerminal {XGlassTerminal} 终端对象
      * @param command {[string]} 命令字符串
+     * @param fun {function} 命令处理函数 匹配到一个确定的就会调用此函数
      * @return {function} linux 命令处理函数
      */
-    grep = (xGlassTerminal, command) => {
+    grep = (xGlassTerminal, command, fun) => {
         if (command.length < 3) {
             XGlassTerminal.appendXGlassText(xGlassTerminal, 'Usage: grep <pattern> <file>');
             return;
@@ -420,12 +593,16 @@ class LinuxCommandHandler {
             XGlassTerminal.appendXGlassText(xGlassTerminal, `grep: ${filePath}: No such file or directory`);
             return;
         }
-        XGlassTerminal.appendXGlassText(xGlassTerminal, `grep: ${filePath} match: ${pattern}`);
-        XGlassTerminal.appendXGlassText(xGlassTerminal, `+=================================+`);
         // 使用正则表达式匹配文件名字
-        for (const line in files) {
-            if (pattern.test(line)) {
-                XGlassTerminal.appendXGlassText(xGlassTerminal, line);
+        const strings = Object.keys(files).filter(key => pattern.test(key));
+        console.info(command, strings, strings.length);
+        if (strings.length === 1 && fun){
+            fun(strings[0]);
+        } else {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, `grep: 【${filePath}】 match: ${pattern}`);
+            XGlassTerminal.appendXGlassText(xGlassTerminal, `+=================================+`);
+            for (const line of strings) {
+                XGlassTerminal.appendXGlassText(xGlassTerminal, `${line} 【${files[line].text}】`);
             }
         }
     };
@@ -437,7 +614,6 @@ class LinuxCommandHandler {
      * @return {function} linux 命令处理函数
      */
     ls = (xGlassTerminal, command) => {
-
         // 获取命令参数
         const args = command || [];
 
@@ -468,6 +644,7 @@ class LinuxCommandHandler {
         XGlassTerminal.appendXGlassText(xGlassTerminal, result);
     };
 
+
     /**
      * linux pwd 命令处理
      * @param xGlassTerminal {XGlassTerminal} 终端对象
@@ -486,7 +663,34 @@ class LinuxCommandHandler {
     cd = (xGlassTerminal, command) => {
         if (command.length > 1) {
             const path = command[1];
-            const targetDir = this.findFileOrDir(path);
+            let fullPath;
+
+            // 处理相对路径和 ../
+            if (path.startsWith('../') || path.startsWith('./') || !path.startsWith('/')) {
+                fullPath = (this.nowPath + '/' + path).replaceAll('//', '/');
+            } else {
+                fullPath = path;
+            }
+
+            // 处理路径中的 ..
+            while (fullPath.includes('../')) {
+                const parts = fullPath.split('/');
+                const index = parts.indexOf('..');
+                if (index > 0) {
+                    parts.splice(index - 1, 2); // 移除 .. 和它前面的一个目录
+                } else {
+                    parts.splice(index, 1); // 如果 .. 在最前面，只移除 ..
+                }
+                fullPath = parts.join('/');
+            }
+
+            // 规范化路径
+            fullPath = fullPath.split('/').filter(part => part !== '').join('/');
+            if (fullPath === '') {
+                fullPath = '/';
+            }
+
+            const targetDir = this.findFileOrDir(fullPath);
 
             if (!targetDir) {
                 XGlassTerminal.appendXGlassText(xGlassTerminal, `cd: no such file or directory: ${path}`);
@@ -496,11 +700,12 @@ class LinuxCommandHandler {
             // 检查是否是目录
             if (typeof targetDir !== 'object' || Array.isArray(targetDir)) {
                 XGlassTerminal.appendXGlassText(xGlassTerminal, `cd: not a directory: ${path}`);
+                return;
             }
-            this.nowPath = path;
+
+            this.nowPath = fullPath;
         }
     };
-
     /**
      * linux mkdir 命令处理
      * @param xGlassTerminal {XGlassTerminal} 终端对象
@@ -543,6 +748,8 @@ class LinuxCommandHandler {
                     XGlassTerminal.appendXGlassText(xGlassTerminal, command[0] + " is a file!");
                 }
             });
+        } else {
+            XGlassTerminal.appendXGlassText(xGlassTerminal, "Usage: touch <file>");
         }
     };
 
@@ -622,6 +829,8 @@ class LinuxCommandHandler {
      */
     echo = (xGlassTerminal, command) => {
         if (command.length > 1) {
+            // 处理变量问题
+            command[1] = this.printenv(xGlassTerminal, ['printenv', command[1].replaceAll('$', '')]);
             // 首先查是否是 >>
             if (command[2] && command[2] === '>>') {
                 // 查看是否有目录
@@ -651,7 +860,7 @@ class LinuxCommandHandler {
         } else {
             XGlassTerminal.appendXGlassText(xGlassTerminal, `${command[0]}: command not found`);
         }
-    };
+    }
 }
 
 /**
@@ -688,6 +897,9 @@ class Command {
      * @return linux 命令处理函数
      */
     static GetLinuxCommandHandler(xGlassTerminal, commandString) {
+        if (commandString.length === 0) {
+            return;
+        }
         Command.backCommand = commandString;
         commandString = Command.commandProHandler(commandString);
         console.info("linux handler: ", commandString);
@@ -708,7 +920,7 @@ class Command {
     /**
      * tab 键处理
      * @param xGlassTerminal {XGlassTerminal} 终端对象
-     * @param commandString {[string]} 命令字符串
+     * @param commandString {string} 命令字符串
      * @return {function} linux 命令处理函数
      * @constructor
      */
@@ -716,11 +928,13 @@ class Command {
         if (commandString.length === 0) {
             return;
         }
-        commandString = Command.commandProHandler(commandString);
-        if (commandString.length === 1) {
-            // 查看命令位是否有备选
-            this.linuxCommand.grep(xGlassTerminal, ['grep', '^' + commandString, '/bin'])
-        }
+        // 查看命令位是否有备选
+        this.linuxCommand.grep(xGlassTerminal, ['grep', '^' + commandString, '/bin'], (r) => {
+            if (r.length > 0) {
+                // 显示备选
+                xGlassTerminal.input.value = xGlassTerminal.getCommandPrefix() + r;
+            }
+        })
     }
 }
 
