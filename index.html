@@ -20,13 +20,13 @@
     // 初始化终端 并对输入进行监听 TODO 参数统一是 当前的终端对象(为了防止在嵌套函数中无法访问设计的) 以及输入的命令
     terminal.initEvent(
         // 第一个函数是监听回车后的命令
-        (x, r) => Command.GetLinuxCommandHandler(x, r),
+        (x, r) => XGlassLinuxCommand.GetLinuxCommandHandler(x, r),
         // 第二个函数是监听Tab键后的命令
-        (x, r) => Command.GetLinuxCommandHandlerTab(x, r),
+        (x, r) => XGlassLinuxCommand.GetLinuxCommandHandlerTab(x, r),
         // 第三个是上方向按键
-        Command.GetLinuxCommandHandlerArrowUp,
+        XGlassLinuxCommand.GetLinuxCommandHandlerArrowUp,
         // 第四个是下方向按键
-        Command.GetLinuxCommandHandlerArrowDown,
+        XGlassLinuxCommand.GetLinuxCommandHandlerArrowDown,
     );
 </script>
 </html>
