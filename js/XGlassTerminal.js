@@ -432,9 +432,13 @@ class LinuxCommandHandler {
      */
     addFileOrDir(xGlassTerminal, path, item) {
         // 获取到当前路径的父目录
-        const parentPath = path.substring(0, path.lastIndexOf('/'));
+        let parentPath = path.substring(0, path.lastIndexOf('/'));
         // 获取到当前路径的名称
         const itemName = path.substring(path.lastIndexOf('/') + 1);
+        // 如果夫目录是空的，则直接给父目录换为绝对路径
+        if (parentPath.charAt(0) === '') {
+            parentPath = this.nowPath;
+        }
         const parent = this.findFileOrDir(parentPath);
         if (parent) {
             parent[itemName] = item;
@@ -709,15 +713,47 @@ class LinuxCommandHandler {
         XGlassTerminal.appendXGlassText(xGlassTerminal, this.nowPath);
     };
 
-    realpath = (xGlassTerminal, command) => {
-        if (command.length < 2) {
+    realpath = (xGlassTerminal, commandStrings, fun = undefined) => {
+        if (commandStrings.length < 2) {
             XGlassTerminal.appendXGlassText(xGlassTerminal, 'Usage: realpath <path>');
             return;
         }
-        const path = command[1];
-        this.findFileOrDir(path, (filePath) => {
-            XGlassTerminal.appendXGlassText(xGlassTerminal, filePath);
-        })
+        // 获取到当前的命令
+        let commandString1 = commandStrings[commandStrings.length - 1];
+        if (commandString1 === '/'){
+            if (fun){
+                fun(commandString1);
+                return;
+            }
+            XGlassTerminal.appendXGlassText(xGlassTerminal, commandString1);
+            return;
+        }
+        if (commandString1.charAt(0) !== '/') {
+            commandString1 = XGlassLinuxCommand.linuxCommand.nowPath + '/' + commandString1;
+        }
+        // 分割路径和文件名
+        const parts = commandString1.split('/');
+        let parentDir = parts.slice(0, -1).join('/') || '/';
+        const fileName = parts[parts.length - 1];
+
+        // 在父目录中找以 fileName 开头的文件或目录
+        this.grep(xGlassTerminal, ['grep', '^' + fileName + '.*', parentDir], (r) => {
+            // 构建目录
+            let s = "";
+            for (let i = 0; i < r.length - 1; i++) {
+                s += r[i];
+            }
+            // 构建路径
+            if (parentDir === "/") {
+                parentDir = ' ';
+            }
+            const res = parentDir + '/' + r;
+            if (fun){
+                fun(res);
+                return;
+            }
+            XGlassTerminal.appendXGlassText(xGlassTerminal, res);
+        });
     };
 
     /**
@@ -850,7 +886,7 @@ class LinuxCommandHandler {
                 }
                 XGlassTerminal.appendXGlassText(xGlassTerminal, "编译：" + string);
                 this.addFileOrDir(xGlassTerminal, path, {
-                    text: string,
+                    __text__: string,
                     __fun__: (xGlassTerminal, command) => {
                         const eval1 = eval(string);
                         if (eval1) {
@@ -975,7 +1011,7 @@ class LinuxCommandHandler {
     };
 
     wget = (xGlassTerminal, command) => {
-        if (command.length > 1) {
+        if (command.length > 2) {
             const url = command[1];
             const fileName = command[2];
             fetch(url)
@@ -1078,6 +1114,8 @@ class LinuxCommandHandler {
         }
     }
 }
+
+
 
 /**
  * 命令处理类
@@ -1207,8 +1245,7 @@ class XGlassLinuxCommand {
                 for (let i = 0; i < r.length - 1; i++) {
                     s += r[i];
                 }
-                s += parentDir;
-                // 构建命令
+                                // 构建命令
                 let c = "";
                 for (let i = 0; i < commandStrings.length - 1; i++) {
                     c += commandStrings[i] + ' ';
