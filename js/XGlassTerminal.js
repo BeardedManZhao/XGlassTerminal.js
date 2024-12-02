@@ -896,7 +896,7 @@ class LinuxCommandHandler {
                 });
             } else {
                 this.addFileOrDir(xGlassTerminal, path, {
-                    text: command.length > 2 ? command[2] : "",
+                    __text__: command.length > 2 ? command[2] : "",
                     __fun__: (xGlassTerminal, command) => {
                         XGlassTerminal.appendXGlassText(xGlassTerminal, command[0] + " is a file!");
                     }
@@ -1011,9 +1011,9 @@ class LinuxCommandHandler {
     };
 
     wget = (xGlassTerminal, command) => {
-        if (command.length > 2) {
+        if (command.length > 1) {
             const url = command[1];
-            const fileName = command[2];
+            const fileName = command.length >= 3 ? command[2] : url.split('/').pop();
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
