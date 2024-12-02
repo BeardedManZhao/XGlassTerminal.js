@@ -94,7 +94,7 @@ terminal.commandPrefix = "root@xxx# ";
 ```javascript
 // 实例化终端 并设置前缀为 #
 const terminal = new XGlassTerminal(document.querySelector("div"), "#");
-// 自定义前缀
+// 自定义前缀 TODO 请确保这个函数在 initEvent 之前调用
 terminal.commandPrefix = "root@xxx# ";
 // 初始化终端 并对输入进行监听 TODO 参数统一是 当前的终端对象(为了防止在嵌套函数中无法访问设计的) 以及输入的命令
 terminal.initEvent(
