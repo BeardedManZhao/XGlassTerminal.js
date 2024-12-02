@@ -42,7 +42,8 @@ XGlassTerminal.js 是一个用于构建前端终端样式的 JavaScript
 
 ### 在线体验
 
-您可以在线体验 XGlassTerminal.js 的功能，[点击这里](https://www.lingyuzhao.top/gamePage/linuxTerminal.html)可以快速前往，这样的方法更加适合于体验。
+您可以在线体验 XGlassTerminal.js 的功能，[点击这里](https://www.lingyuzhao.top/gamePage/linuxTerminal.html)
+可以快速前往，这样的方法更加适合于体验。
 
 ### 基本终端样式使用案例
 
@@ -124,7 +125,8 @@ terminal.initEvent(
 
 ## 更新日志
 
-### 2024-12-02 
+### 2024-12-02
 
 - 优化了 Linux 终端的命令提示
 - 增多了 Linux 中的命令数量
+- 支持 Linux 命令的补全操作

@@ -11,7 +11,7 @@
 
 </div>
 </body>
-<script src="js/XGlassTerminal.js" type="text/javascript"></script>
+<script src="js/XGlassTerminal.min.js" type="text/javascript"></script>
 <script>
     // 实例化终端 并设置前缀为 #
     const terminal = new XGlassTerminal(document.querySelector("div"), "#");
@@ -24,7 +24,9 @@
         // 第二个函数是监听Tab键后的命令
         (x, r) => Command.GetLinuxCommandHandlerTab(x, r),
         // 第三个是上方向按键
-        Command.GetLinuxCommandHandlerArrowUp
+        Command.GetLinuxCommandHandlerArrowUp,
+        // 第四个是下方向按键
+        Command.GetLinuxCommandHandlerArrowDown,
     );
 </script>
 </html>
