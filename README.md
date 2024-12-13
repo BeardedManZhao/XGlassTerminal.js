@@ -105,6 +105,24 @@ terminal.initEvent(
 );
 ```
 
+### 监听所有按键
+
+```javascript
+    // 实例化终端 并设置前缀为 #
+    const terminal = new XGlassTerminal(document.querySelector("div"), "#");
+    // 自定义前缀 不需要前缀 直接设置为空字符串
+    terminal.commandPrefix = "";
+    // 初始化终端 并对输入进行监听 TODO 参数统一是 当前的终端对象(为了防止在嵌套函数中无法访问设计的) 以及输入的命令
+    terminal.initEvent(
+        undefined, undefined, undefined, undefined, (xGlassTerminal, key) => {
+            // 这里可以对接到 后端的 ssh 连接 一般来说 后端的ssh 接收每一个字符 然后回复数据给前端！回复的逻辑内置实现好了
+            console.info(key);
+        }, false
+    );
+    // 追加文本 可以将这个对接到后端的回复数据接收部分 追加到终端中
+    XGlassTerminal.appendXGlassText(terminal, "这里可以将后端的回复数据直接追加！！！", undefined, false, false);
+```
+
 ## linux 终端模拟操作
 
 ```javascript

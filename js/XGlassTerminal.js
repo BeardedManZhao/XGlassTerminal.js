@@ -98,9 +98,10 @@ class XGlassTerminal {
      * @param text {string} 添加的文本
      * @param fun {function} 用于处理添加的文本的函数
      * @param trimPrefix {boolean} 是否去除命令前缀
+     * @param newLine {boolean} 是否换行 默认为 true
      */
-    static appendXGlassText(xGlassTerminal, text, fun = undefined, trimPrefix = false) {
-        xGlassTerminal._XGlassTerminalPre.appendChild(document.createTextNode(text + '\n'));
+    static appendXGlassText(xGlassTerminal, text, fun = undefined, trimPrefix = false, newLine = true) {
+        xGlassTerminal._XGlassTerminalPre.appendChild(document.createTextNode(newLine ? text + '\n' : text));
         if (trimPrefix) {
             text = text.substring(xGlassTerminal._commandPrefix.length);
         }
@@ -128,20 +129,40 @@ class XGlassTerminal {
      * @param commandTabFun {function} 命令补全处理函数，此函数会在输入框按下 tab 时调用 参数是 xGlassTerminal 对象 以及 输入框的值
      * @param ArrowUp {function} 上方向
      * @param ArrowDown {function} 下方向
+     * @param allKeyFun {function} 所有按键事件 若设置了这个 则会覆盖其他按键事件
      */
-    initEvent(commandSubmitFun, commandTabFun = undefined, ArrowUp = undefined, ArrowDown = undefined) {
+    initEvent(commandSubmitFun = undefined, commandTabFun = undefined, ArrowUp = undefined, ArrowDown = undefined, allKeyFun = undefined, needWelcome = true) {
         const xGlassTerminal = this;
         const inputLabel = xGlassTerminal._inputLabel;
         const length = xGlassTerminal.getCommandPrefix().length;
 
-        // 欢迎命令
-        commandSubmitFun(xGlassTerminal, "welcome");
+        if (needWelcome && commandSubmitFun) {
+            // 欢迎命令
+            commandSubmitFun(xGlassTerminal, "welcome");
+        }
 
         xGlassTerminal._xGlassTerminal.addEventListener("click", function () {
             inputLabel.click();
         });
 
+        // 准备字符字典 key 是键盘的键名，value 是对应的字符或字符串
+        const charDict = {
+            'Enter': '\n',
+            'Backspace': '\b',
+            'Tab': '\t',
+            'Delete': '\x7F', // ASCII 删除符
+            'Escape': '\x1B', // ASCII 转义符
+            'Space': ' '       // 空格
+        };
+
         // 准备函数
+        if (allKeyFun){
+            xGlassTerminal._input.addEventListener('keydown', function (event) {
+                event.preventDefault();
+                allKeyFun(xGlassTerminal, charDict[event.key]);
+            });
+            return;
+        }
         xGlassTerminal._input.addEventListener('keydown', function (event) {
             if (event.key === 'Backspace' || event.key === 'Delete') {
                 if (this.selectionStart === 0 && this.selectionEnd === 1) {
